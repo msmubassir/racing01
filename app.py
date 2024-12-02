@@ -5,7 +5,7 @@ from user_agent import generate_user_agent
 import os
 
 app = Flask(__name__)
-executor = ThreadPoolExecutor(max_workers=1000)
+executor = ThreadPoolExecutor(max_workers=200)
 tasks = {}
 running_urls = {}
 
