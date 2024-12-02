@@ -54,5 +54,6 @@ def status():
     active_urls = [url for url, status in running_urls.items() if status]
     return jsonify({"active_urls": active_urls})
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
