@@ -2,9 +2,10 @@ from flask import Flask, request, jsonify, render_template
 from concurrent.futures import ThreadPoolExecutor
 import urllib.request
 from user_agent import generate_user_agent
+import os
 
 app = Flask(__name__)
-executor = ThreadPoolExecutor(max_workers=100)
+executor = ThreadPoolExecutor(max_workers=1000)
 tasks = {}
 running_urls = {}
 
