@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request System</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #log { margin-top: 20px; max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Request System</h1>
+    <input type="text" id="start-url" placeholder="Enter URL to Start">
+    <button onclick="startAttack()">Start</button>
+    <input type="text" id="stop-url" placeholder="Enter URL to Stop">
+    <button onclick="stopAttack()">Stop</button>
+    <div id="status"></div>
+    <div id="log"></div>
+
+    <script>
+        async function startAttack() {
+            const url = document.getElementById('start-url').value;
+            if (!url) return alert("URL is required.");
+            const response = await fetch('/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url })
+            });
+            const data = await response.json();
+            document.getElementById('status').innerText = data.message || data.error;
+        }
+
+        async function stopAttack() {
+            const url = document.getElementById('stop-url').value;
+            if (!url) return alert("URL is required.");
+            const response = await fetch('/stop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url })
+            });
+            const data = await response.json();
+            document.getElementById('status').innerText = data.message || data.error;
+        }
+
+        async function checkStatus() {
+            const response = await fetch('/status');
+            const data = await response.json();
+            const activeUrls = data.active_urls.join(', ') || 'None';
+            document.getElementById('log').innerText = `Active URLs: ${activeUrls}`;
+        }
+
+        setInterval(checkStatus, 5000); // Refresh active URLs every 5 seconds
+    </script>
+</body>
+</html>
